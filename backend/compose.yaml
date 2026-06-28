@@ -1,0 +1,102 @@
+services:
+  server:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      postgres:
+        condition: service_started
+      redis:
+        condition: service_started
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app     # Make sure this matches your WORKDIR in Dockerfile
+          ignore:
+            - __pycache__/
+            - .venv/
+        - action: rebuild
+          path: requirements.txt # Rebuilds if you add a python package
+
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:Panda2611@postgres:5432/fastapi_db
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+      SECRET_KEY: PANDA@2611
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      MAIL_USERNAME: aditya.sarkale@trackcomponents.in
+      MAIL_PASSWORD: efkfkrursivvcflh
+      MAIL_FROM: aditya.sarkale@trackcomponents.in
+      MAIL_SERVER: smtp.gmail.com
+      MAIL_PORT: 587
+      MAIL_STARTTLS: True
+      MAIL_SSL_TLS: False
+
+  worker:
+    build:
+      context: .
+
+    command: celery -A core.app_celery.celery_app worker --pool=solo -l info
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - __pycache__/
+            - .venv/
+        - action: rebuild
+          path: requirements.txt
+
+    depends_on:
+      redis:
+        condition: service_started
+
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:Panda2611@postgres:5432/fastapi_db
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+      SECRET_KEY: PANDA@2611
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      MAIL_USERNAME: aditya.sarkale@trackcomponents.in
+      MAIL_PASSWORD: efkfkrursivvcflh
+      MAIL_FROM: aditya.sarkale@trackcomponents.in
+      MAIL_SERVER: smtp.gmail.com
+      MAIL_PORT: 587
+      MAIL_STARTTLS: True
+      MAIL_SSL_TLS: False
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres_main_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Panda2611
+      POSTGRES_DB: fastapi_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-main
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:

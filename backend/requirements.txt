@@ -1,0 +1,17 @@
+fastapi
+sqlalchemy
+redis
+redis[hiredis]
+uvicorn
+httpx
+pydantic
+asyncpg
+psycopg2-binary
+python-dotenv
+gunicorn
+pydantic-settings
+celery
+bcrypt
+python-jose[cryptography]
+fastapi-mail
+python-multipart
