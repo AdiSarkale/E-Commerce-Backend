@@ -2,8 +2,7 @@ from utils.password_hasher import PasswordHasher
 from utils.josewt import create_access_token, create_refresh_token, decode_token
 from repository.auth import AuthRepository
 from utils.cache import CacheManager
-from datetime import time
-
+from time import time
 
 
 class AuthService:
@@ -64,10 +63,10 @@ class AuthService:
         if not exp:
             raise ValueError('Invalid TOken')
 
-        ttl = exp - int(time.time())
+        ttl = exp - int(time())
 
         if ttl > 0:
-            await CacheManager.set(f"jwt:blacklist:{token}","1",ex=ttl)
+            await CacheManager.set(f"jwt:blacklist:{token}","1",ttl=ttl)
 
         return {
             'message' : "Logout Successful"

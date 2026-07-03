@@ -5,7 +5,7 @@ from schema.product import ProductCreate, ProductUpdate
 from sqlalchemy.orm import Session
 import uuid
 from datetime import datetime
-
+from repository.inventory import InventoryRepository
 class ProductRepository:
 
     @staticmethod
@@ -29,8 +29,10 @@ class ProductRepository:
         data["created_at"] = datetime.now()
         db_product = Product(**data)
         db.add(db_product)
+
         await db.commit()
         await db.refresh(db_product)
+        await InventoryRepository.create(db,db_product.id,quantity=1)
         return db_product
 
     @staticmethod

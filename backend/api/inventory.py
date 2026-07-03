@@ -14,16 +14,14 @@ router = APIRouter(prefix='/inventory',tags=['Inventory'])
 async def create_inventory(
     payload:  InventoryCreate,
     db: AsyncSession = Depends(get_db)):
+    try:
 
-    existing = await InventoryRepository.get_by_product(db,payload.product_id)
+        res = await InventoryService.create_inventory(db,payload.product_id, payload.quantity)
 
-    if existing:
-        return ApiResponse(success=False, message='Inventory Already Exists', data=InventoryResponse.model_validate(existing) )
-
-
-    res = await InventoryService.create_inventory(db,payload.product_id, payload.quantity)
-
-    return ApiResponse(sucess=True, message='Inventory Created Succesfully', data=InventoryResponse.model_validate(res) )
+        return ApiResponse(sucess=True, message='Inventory Created Succesfully', data=InventoryResponse.model_validate(res) )
+    except Exception as e:
+        print(payload)
+        return ApiResponse(success=False, message=f'ERROR {str(e)}', data=None)
 
 
 @router.get('/product/{product_id}',response_model=ApiResponse[InventoryResponse])

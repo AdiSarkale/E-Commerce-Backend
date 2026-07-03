@@ -36,7 +36,7 @@ class Orders(Base):
     razorpay_payment_id: Mapped[str] = mapped_column(String, default='Card', nullable=True)
     razorpay_signature: Mapped[str] = mapped_column(String, default='Card', nullable=True)
 
-    paid_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    paid_at: Mapped[datetime] = mapped_column(DateTime, nullable=True, default=func.now())
 
     user = relationship('User' ,back_populates='order')
     order_item = relationship('OrderItem', back_populates='order')

@@ -24,9 +24,13 @@ class AddressServices:
             return [AddressResponse.model_validate(cache) for cache in cached]
         result = await AddressRepository.get_user_addr(db,user_id)
         addr = [AddressResponse.model_validate(res) for res in result]
+        cache_data = [
+            item.model_dump(mode="json")
+            for item in addr
+                ]
         await CacheManager.set(
             cached_key,
-            addr.model_dump_json(),
+            json.dumps(cache_data),
             ttl=300
             )
         return addr

@@ -37,7 +37,7 @@ class UserService:
 
         cached_key = f"user:{id}"
 
-        cached = CacheManager.get(cached_key)
+        cached = await CacheManager.get(cached_key)
 
         if cached:
             return UserResponse.model_validate_json(cached)

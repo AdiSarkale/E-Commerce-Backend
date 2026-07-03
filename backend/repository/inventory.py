@@ -10,6 +10,11 @@ class InventoryRepository:
         product_id:int,
         quantity: int):
 
+        existing = await InventoryRepository.check_existing(db,product_id)
+
+        if existing:
+            return None
+
         inventory =  Inventory(
             product_id = product_id,
             quantity = quantity
@@ -22,6 +27,15 @@ class InventoryRepository:
 
 
     @staticmethod
+    async def check_existing(
+        db,product_id:int):
+        result = await db.execute(select(Inventory).where(Inventory.product_id == product_id))
+        prod = result.scalar_one_or_none()
+        if not prod:
+            return None
+        return prod
+
+    @staticmethod
     async def get_by_product(
         db,
         product_id: int):
@@ -31,7 +45,9 @@ class InventoryRepository:
 
         prd = result.scalar_one_or_none()
         if not prd:
-            raise ValueError('No Products with ID : {product_id} Exists')
+            raise ValueError(f'No Products with ID : {product_id} Exists')
+
+        return prd
 
 
     @staticmethod

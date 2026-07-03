@@ -12,6 +12,9 @@ class InventoryService:
 
         inv = await InventoryRepository.create(db,product_id,quantity)
 
+        if not inv:
+            return None
+
         await db.commit()
 
         return inv
@@ -24,11 +27,12 @@ class InventoryService:
         if cached:
             return InventoryResponse.model_validate(cached)
         res = await InventoryRepository.get_by_product(db, product_id)
+        response = InventoryResponse.model_validate(res)
+
         await CacheManager.set(
             cached_key,
-            cached.model_dumps_json(),
-            ttl=300
-            )
+            response.model_dump_json(),
+            ttl=300)
         return InventoryResponse.model_validate(res)
 
 
