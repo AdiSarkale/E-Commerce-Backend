@@ -3,7 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 from redis.asyncio import Redis
 from db import get_db
-from core.cache import cached
+from utils.cache import CacheManager
 
 from fastapi import Depends
 
@@ -20,7 +20,7 @@ async def health():
 @router.get('/ready')
 async def readiness(
     db: AsyncSession = Depends(get_db),
-    redis: Redis = Depends(cached)
+    redis: Redis = Depends(CacheManager)
     ):
 
     db_status = 'connected'
