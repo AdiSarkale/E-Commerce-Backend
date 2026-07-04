@@ -1,5 +1,11 @@
 services:
   server:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
     build:
       context: .
     ports:
@@ -100,3 +106,5 @@ services:
 volumes:
   postgres_data:
   redis_data:
+
+

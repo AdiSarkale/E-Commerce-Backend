@@ -6,7 +6,7 @@ import httpx
 from contextlib import asynccontextmanager
 
 
-from api import (products,user,cart,inventory,orders,Authentication,address)
+from api import (products,user,cart,inventory,orders,Authentication,address,health)
 from tasks.email_task import send_welcome_email
 
 
@@ -36,6 +36,7 @@ app.include_router(orders.router)
 app.include_router(inventory.router)
 app.include_router(Authentication.router)
 app.include_router(address.router)
+app.include_router(health.router)
 
 
 
