@@ -65,6 +65,7 @@ class AuthService:
 
         ttl = exp - int(time())
 
+
         if ttl > 0:
             await CacheManager.set(f"jwt:blacklist:{token}","1",ttl=ttl)
 
