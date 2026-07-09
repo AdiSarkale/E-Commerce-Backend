@@ -35,7 +35,7 @@ async def get_inventory(
         return ApiResponse(success=True, message=f'{str(e)}', data=None)
 
 
-@router.post(
+@router.put(
     "/product/{product_id}",
     response_model=ApiResponse[InventoryResponse]
 )
