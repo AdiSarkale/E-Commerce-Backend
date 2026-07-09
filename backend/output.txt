@@ -1,0 +1,1 @@
+{"success": true, "message": "User Created Sucessfully", "data": {"id": 56, "email": "xneal@example.com", "name": "amy50", "created_at": "2026-07-09T05:40:17.829495"}}

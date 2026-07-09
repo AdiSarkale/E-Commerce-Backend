@@ -18,8 +18,7 @@ async def lifespan(app: FastAPI):
     yield
     await app.state.client.aclose()
 
-app = FastAPI(
-    title="E-Commerce Backend", lifespan=lifespan)
+app = FastAPI(title="E-Commerce Backend", lifespan=lifespan)
 
 app.add_middleware(
     CORS,

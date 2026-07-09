@@ -77,7 +77,6 @@ class UserRepository:
         if user:
             user.name = user_data.name
             user.email = user_data.email
-            user.hashed_password = user_data.hashed_password
             await db.commit()
             await db.refresh(user)
             return user
