@@ -17,6 +17,12 @@ async def create_inventory(
     try:
 
         res = await InventoryService.create_inventory(db,payload.product_id, payload.quantity)
+        if res is None:
+            return ApiResponse(
+                success=False,
+                message="Inventory already exists for this product.",
+                data=None,
+                )
 
         return ApiResponse(success=True, message='Inventory Created Succesfully', data=InventoryResponse.model_validate(res) )
     except Exception as e:

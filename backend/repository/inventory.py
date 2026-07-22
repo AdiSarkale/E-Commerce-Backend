@@ -22,6 +22,7 @@ class InventoryRepository:
 
         db.add(inventory)
         await db.flush()
+        await db.refresh(inventory)
 
         return inventory
 
