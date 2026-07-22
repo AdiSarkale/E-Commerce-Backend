@@ -26,8 +26,5 @@ async def get_db():
         yield session
 
 
-async def get_current_user():
-    pass
-
 class Base(DeclarativeBase):
     pass

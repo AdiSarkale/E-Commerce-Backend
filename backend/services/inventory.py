@@ -16,6 +16,7 @@ class InventoryService:
             return None
 
         await db.commit()
+        await db.refresh(inv)
 
         return inv
 
