@@ -18,7 +18,7 @@ async def create_inventory(
 
         res = await InventoryService.create_inventory(db,payload.product_id, payload.quantity)
 
-        return ApiResponse(sucess=True, message='Inventory Created Succesfully', data=InventoryResponse.model_validate(res) )
+        return ApiResponse(success=True, message='Inventory Created Succesfully', data=InventoryResponse.model_validate(res) )
     except Exception as e:
         print(payload)
         return ApiResponse(success=False, message=f'ERROR {str(e)}', data=None)
