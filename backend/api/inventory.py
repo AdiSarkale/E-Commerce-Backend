@@ -38,7 +38,7 @@ async def get_inventory(
         res = await InventoryService.get_by_id(db,product_id)
         return ApiResponse(success=True, message='Inventory Fetched Successfully', data=res)
     except Exception as e:
-        return ApiResponse(success=True, message=f'{str(e)}', data=None)
+        return ApiResponse(success=False, message=f'{str(e)}', data=None)
 
 
 @router.put(

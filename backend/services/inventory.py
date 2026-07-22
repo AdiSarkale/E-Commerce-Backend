@@ -34,7 +34,7 @@ class InventoryService:
             cached_key,
             response.model_dump_json(),
             ttl=300)
-        return InventoryResponse.model_validate(res)
+        return response
 
 
     @staticmethod
